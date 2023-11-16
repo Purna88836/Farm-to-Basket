@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .product-details-container {
+            margin: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details-container h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .product-details-container p {
+            font-size: 15px;
+            color: #666;
+        }
+
+        .product-details-container hr {
+            margin: 20px 0;
+            border: 0.5px solid #ccc;
+        }
+
+        .customer-reviews {
+            margin-top: 30px;
+        }
+
+        .customer-reviews h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .customer-reviews p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .customer-reviews hr {
+            margin: 15px 0;
+            border: 0.5px solid #ccc;
+        }
+
+        .product-details-container img {
+            max-width: 100px;
+            max-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="product-details-container">
+        <img src="{{ product.image.url }}"}>
+        <h2>{{ product.name }}</h2>
+        <p>About: {{ product.description }}</p>
+        <p>Price: ${{ product.price }}</p>
+        <p>Available Quantity: {{ product.quantity }}</p>
+        <hr>
+        <h3>Customer Reviews</h3>
+        <div class="customer-reviews">
+            {% for review, customer in review_customer_pairs %}
+            <p class="review-details">Reviewed by: <strong>{{ customer.customer_name }}</strong> <br> <strong>{{ review.created_at }}</strong></p>
+            <p>{{ review.content }}</p>
+            <hr>
+            {% empty %}
+            <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+

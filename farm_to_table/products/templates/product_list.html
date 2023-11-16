@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            background-image: url('{% static "customer_home_page.jpeg" %}');
+            background-size: cover; /* This ensures the background image covers the entire body */
+            background-position: center;
+        }
+
+        .toolbar {
+            background: linear-gradient(90deg, rgba(76,175,80,1) 0%, rgba(33,150,83,1) 50%, rgba(0,123,255,1) 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-width: 40px;
+            max-height: 40px;
+            margin-right: 10px;
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .logout-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .container {
+            margin: 100px;
+            padding: 80px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 1) 0%, rgba(33, 150, 83, 1) 100%); /* Gradient background */
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2); /* Box shadow */
+            display: flex;
+            flex-wrap: wrap; /* Allows products to wrap to the next line */
+            justify-content: space-around; /* Centers products horizontally */
+            transition: fadeIn 2s ease-in-out; /* Smooth transition for background color */
+        }
+
+        .container:hover {
+            background: linear-gradient(135deg, rgba(33, 150, 83, 1) 0%, rgba(76, 175, 80, 1) 100%); /* Gradient background on hover */
+        }
+
+        .container .product {
+            width: 200px; /* Set a fixed width for each product card */
+            margin: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for transform and box shadow */
+        }
+
+        .container .product:hover {
+            transform: translateY(-5px); /* Move product card up slightly on hover */
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2); /* Add box shadow on hover */
+        }
+
+        .container .product img {
+            max-width: 100px;
+            max-height: auto;
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .container .add-to-cart {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 29px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease; /* Smooth transition for background color */
+        }
+
+        .container .add-to-cart:hover {
+            background-color: #45a049; /* Change background color on hover */
+        }
+
+        .container .product-details {
+            background-color: #f1e10b;
+            color: rgb(11, 10, 10);
+            padding: 10px 15px;
+            border: none;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease; /* Smooth transition for background color */
+        }
+
+        .container .product-details:hover {
+            background-color: #f1e10b; /* Change background color on hover */
+        }
+
+        .welcome-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin: 0 auto;
+        }
+
+        .quality-section {
+            background-color: #f9f9f9;
+            margin: 100px;
+            padding: 80px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .quality-text {
+            margin-bottom: 20px;
+        }
+
+        .quality-text p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .quality-image {
+            max-width: 400%;
+            height: 250px;
+            margin-top: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-history-icon {
+            margin-right: 10px; /* Adds space between icon and text */
+            font-size: 24px; /* Font size of the icon */
+        }
+
+        .order-history-text {
+            font-size: 18px; /* Font size of the text */
+        }
+
+        .product-details {
+            color: #4caf50; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: color 0.3s ease; 
+        }
+
+        .product-details:hover {
+            color: #0056b3;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span class="welcome-text">Welcome to Farm-to-Table, {{ customer_name.fullname }}</span>
+        <div class="logo">
+            <form action="{% url 'view_cart' %}">
+                <button class="add-to-cart", type="submit"><span class="cart-icon">&#x1F6D2;</span></button>
+            </form>
+
+            <form action="{% url 'order_history' %}">
+                <button class="add-to-cart", type="submit"><span class="order-history-icon">&#x1F4DD;</span>Orders</button>
+            </form>
+            <a href="{% url 'user_login' %}" class="logout-button">Logout</a>
+
+            <img src="{% static 'account_icon.png' %}" alt="Account Icon">
+            
+        </div>
+    </div>
+
+    <div class="quality-section">
+        <div class="quality-text">
+            <img src="{% static 'quality_image.jpeg' %}" alt="Quality Products Image" class="quality-image">
+            <p>Welcome to Farm-to-Table, your ultimate destination for high-quality, farm-fresh products sourced directly from local farmers. At Farm-to-Table, we take pride in offering a wide range of premium, organic produce and artisanal goods that are carefully curated to enhance your culinary experiences.</p>
+            <p> Our commitment to quality begins at the root - in the lush fields and orchards of local farmers who prioritize sustainable, organic farming practices. From crisp, farm-picked apples to vibrant, freshly harvested vegetables and fragrant, hand-ground spices, each product in our collection is a testament to the dedication of our farmers.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% for product in products %}
+        {% if product.quantity > 0 %}
+        <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</a></h2>
+            <p>Price: ${{ product.price }}</p>
+            <p>Available Quantity: {{ product.quantity }}</p>
+            <form action="{% url 'product_detail' product.id %}">
+                <button class="product-details">Product details</button>
+            </form>
+
+            <form action="{% url 'add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button class="add-to-cart", type="submit">Add to Cart</button>
+            </form>
+
+        </div>
+        {% endif %}
+        {% empty %}
+        <p>No products available.</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

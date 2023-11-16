@@ -1,0 +1,430 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('{% static "farmer_home_page.jpeg" %}') no-repeat center center/cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #4caf50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .account-options {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .account-icon {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .account-options a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            margin: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-img {
+            width: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .product-form button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .product-list {
+            margin-top: 30px;
+        }
+
+        .product-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-list th, .product-list td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .product-list th {
+            background-color: #f2f2f2;
+        }
+        
+
+        .rect-container {
+            border-radius: 5px;
+            margin-top: 50px;
+            margin-left: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-left: 50px;
+        }
+
+        .rectangle-container {
+            width: 350px;
+            height: 270px;
+            border-radius: 65px;
+            overflow: hidden;
+            margin-right: 20px;
+            margin-bottom: 55px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+
+        .rectangle-container img {
+            max-width: 280px;
+            max-height: 150px;
+            margin-left: 90px;
+            margin-top: 40px;
+            border-radius: 20%;
+        }
+
+        .button-inside {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Optional: Hover effect for the button */
+        .button-inside:hover {
+            background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .message-icon-container {
+            position: relative;
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+            margin-right: 10px; 
+        }
+
+        .message-icon {
+            width: 37px; /* Set the width and height according to your icon size */
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .message-icon,
+        .account-icon {
+            margin-right: 10px; /* Add some space between icons */
+        }
+
+        .message-count {
+            position: absolute;
+            top: 0;
+            margin-bottom: 5px;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 8px;
+            font-size: 14px;
+        }
+
+        .message-container.hidden {
+            display: none;
+        }
+
+        .message-container img {
+            max-width: 100px;
+            max-height: auto;
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Farmer's Dashboard</h1>
+        <div class="account-options">
+            <div class="message-icon-container">
+                <img class="message-icon" src="{% static 'farmer_message_icon.png' %}" alt="Message Icon">
+                <div class="message-count", id="messageButton">{{ notifications|length }}</div>
+            </div>
+            <img class="account-icon" src="{% static 'account_icon.png' %}" alt="Account Icon">
+            <a href="{% url 'user_login' %}">Logout</a>
+        </div>
+    </div>
+
+    <div class="rect-container">
+
+
+        <div class="rectangle-container">
+            <img src="{% static 'detailed_report.jpeg' %}" alt="Description of the image">
+
+            <form action="{% url 'customer_report' %}">
+                <button class="button-inside", type="submit">Detailed Customer Report</button>
+            </form>
+        </div>
+
+        <div class="rectangle-container">
+            <img src="{% static 'farmer_history_icon.png' %}" alt="Description of the image">
+            <button class="button-inside", id="productsownButton">Products Owned History</button>
+        </div>
+
+        <div class="rectangle-container">
+            <img src="{% static 'farmer_product_sale_history_icon.png' %}" alt="Description of the image">
+            <button class="button-inside", id="productssoldButton">Products Sold Report</button>
+        </div>
+
+        <div class="rectangle-container">
+            <img src="{% static 'farmer_add_product_icon.png' %}" alt="Description of the image">
+            <form action="{% url 'add_product' %}" method="get">
+               <button class="button-inside", id="addproductsButton">Add Products</button>
+            </form>
+        </div>
+
+        <div class="rectangle-container">
+            <img src="{% static 'farmer_product_sale_history_icon.png' %}" alt="Description of the image">
+            <button class="button-inside", id="graphButton">Track Products and money</button>
+        </div>
+
+    </div>
+
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">Messages</h2>
+
+                <div class="message-container">
+                    {% for notification in notifications %}
+                    <img src="{{ notification.product.image.url }}" alt="{{ product.name }}">
+                    <div class="notification"><strong>{{ notification.message }}</strong></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="graphModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">Graph</h2>
+                <div id="chart">
+                    {{scatter_chart_div|safe}}
+                </div>
+                <div id="chart">
+                    {{bar_chart_div|safe}}
+                </div>
+            </div>   
+        </div>
+    </div>   
+
+    <!-- The Modal of products owned history-->
+    <div class="modal" id="productsownModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">History</h2>
+
+
+                <div class="product-list">
+                    <h2>Products you own</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity (kg)</th>
+                                <th>Price per kg</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.total_amount }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No products owned yet.
+
+                                <div class="product-form">
+                                    <form action="{% url 'add_product' %}" method="get">
+                                        <button type="submit">Add Products</button>
+                                    </form>
+                                </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal of products sold report -->
+    <div class="modal" id="productssoldModal">
+        <div class="modal-content">
+            <div class="container">
+                <h2 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 24px;">History</h2>
+
+                <div class="product-list">
+                    <h2>Products Sold</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity (kg)</th>
+                                <th>Price per kg</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product_detail in product_details %}
+                            <tr>
+                                <td><a href="{% url 'customer_individual_report' product_detail.product.id %}">{{ product_detail.product.name }}</a></td>
+                                <td>{{ product_detail.count }}</td>
+                                <td>{{ product_detail.product.price }}</td>
+                                <td>{{ product_detail.total_amount }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No products sold yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="total-owe">
+                    <h2>Total Amount Owed: ${{ total_owe }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript code
+        const productsownButton = document.getElementById('productsownButton');
+        const productsownModal = document.getElementById('productsownModal');
+        const productssoldButton = document.getElementById('productssoldButton');
+        const productssoldModal = document.getElementById('productssoldModal');
+
+        productsownButton.addEventListener('click', () => {
+            productsownModal.style.display = 'block';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === productsownModal) {
+                productsownModal.style.display = 'none';
+            }
+        });
+
+        productssoldButton.addEventListener('click', () => {
+            productssoldModal.style.display = 'block';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === productssoldModal) {
+                productssoldModal.style.display = 'none';
+            }
+        });
+
+        // for message icon
+        const messageButton = document.getElementById('messageButton');
+        const messageModal = document.getElementById('messageModal');
+
+        messageButton.addEventListener('click', () => {
+            messageModal.style.display = 'block';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === messageModal) {
+                messageModal.style.display = 'none';
+            }
+        });
+
+        //for graph button
+
+        // for message icon
+        const graphButton = document.getElementById('graphButton');
+        const graphModal = document.getElementById('graphModal');
+
+        graphButton.addEventListener('click', () => {
+            graphModal.style.display = 'block';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === graphModal) {
+                graphModal.style.display = 'none';
+            }
+        });
+        
+    </script>
+</body>
+
+</html>

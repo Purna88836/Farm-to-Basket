@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .customer-card {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .customer-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .customer-details img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .customer-info {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Customer Details</h2>
+    {% for customer in customers %}
+    <div class="customer-card">
+        <div class="customer-details">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div>
+                <div class="customer-info">Product Name: {{ product.name }}</div>
+                <div class="customer-info">Customer name: {{ customer.customer_name }}</div>
+                <div class="customer-info">Email: {{ customer.customer_email }}</div>
+                <div class="customer-info">Mobile Number: {{ customer.customer_mobile_number }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

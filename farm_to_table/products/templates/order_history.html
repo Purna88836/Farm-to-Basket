@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .checkout-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+
+        .cart-item img {
+            max-width: 100px;
+            max-height: 50px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    {% for item in cart_items %}
+    <h2>Your Past Orders</h2>
+    <div class="cart-item">
+        <img src="{{ item.product.image.url }}"}>
+        <h3>{{ item.product.name }}</h3>
+        <h3>Price: ${{ item.total_price }}</h3>
+        <h2><a href="{% url 'add_review' item.product.id %}">Write a review</a></h2>
+        <h2>Total Spent Amount: ${{ total_price }}</h2>
+    </div>
+    {% empty %}
+    <p>You have no Orders</p>
+    {% endfor %}
+
+</body>
+
+</html>
+
