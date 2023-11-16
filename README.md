@@ -78,31 +78,34 @@ To get started with Farm-to-Basket, follow these simple steps:
 ### 1. Install Dependencies
 
 <pre>
-pip install -r requirements.txt.
+pip install -r requirements.txt
 </pre>
 
 This command installs all the necessary dependencies for the Farm-to-Basket application.
 
 ### 2. Run Migrations
 
-'''bash
+<pre>
 python manage.py migrate
+</pre>
 
 Running migrations ensures that the database is set up with the required tables and structures for the application to function correctly.
 
 
 ### 3. Create a Superuser Account
 
-'''bash
+<pre>
 python manage.py createsuperuser
+</pre>
 
 Creating a superuser account provides administrative access to the Farm-to-Basket application. Follow the prompts to set up the superuser account.
 
 
 ### 4. Start the Development Server
 
-'''bash
+<pre>
 python manage.py runserver 8002
+</pre>
 
 This command launches the development server, allowing you to access the Farm-to-Basket application locally.
 
