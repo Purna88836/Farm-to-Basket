@@ -77,8 +77,9 @@ To get started with Farm-to-Basket, follow these simple steps:
 
 ### 1. Install Dependencies
 
-'''bash
+<pre>
 pip install -r requirements.txt.
+</pre>
 
 This command installs all the necessary dependencies for the Farm-to-Basket application.
 
